@@ -1,0 +1,58 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.hadoop.io.serializer;
+
+import org.checkerframework.checker.tainting.qual.Tainted;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.hadoop.classification.InterfaceAudience;
+import org.apache.hadoop.classification.InterfaceStability;
+
+/**
+ * <p>
+ * Provides a facility for serializing objects of type <T> to an
+ * {@link OutputStream}.
+ * </p>
+ * 
+ * <p>
+ * Serializers are stateful, but must not buffer the output since
+ * other producers may write to the output between calls to
+ * {@link #serialize(Object)}.
+ * </p>
+ * @param <T>
+ */
+@InterfaceAudience.LimitedPrivate({"HDFS", "MapReduce"})
+@InterfaceStability.Evolving
+public interface Serializer<@Tainted T extends java.lang.@Tainted Object> {
+  /**
+   * <p>Prepare the serializer for writing.</p>
+   */
+  void open(@Tainted Serializer<T> this, @Tainted OutputStream out) throws IOException;
+  
+  /**
+   * <p>Serialize <code>t</code> to the underlying output stream.</p>
+   */
+  void serialize(@Tainted Serializer<T> this, @Tainted T t) throws IOException;
+  
+  /**
+   * <p>Close the underlying output stream and clear up any resources.</p>
+   */  
+  void close(@Tainted Serializer<T> this) throws IOException;
+}

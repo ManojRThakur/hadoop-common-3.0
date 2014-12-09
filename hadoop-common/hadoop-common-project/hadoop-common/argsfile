@@ -1,0 +1,6 @@
+-AsuppressWarnings=purity.invalid.overriding
+-Alint
+-AprintErrorStack
+-Awarns
+-Xmaxwarns 10000
+-XDignore.symbol.file=true
